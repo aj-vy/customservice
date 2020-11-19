@@ -1,0 +1,83 @@
+<div class="login-form">
+    <div *ngIf="isSignup">
+        <h1>Create Account</h1>
+    </div>
+
+    <div *ngIf="isLogin">
+        <h1>Sign In</h1>
+    </div>
+
+    <div *ngIf="isPasswordReset">
+        <button size="small"  (click)="changeType('login')">
+            < Back</button>
+                <h1>Reset Password</h1>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <!-- <div class="col-2">
+               
+        </div> -->
+
+            <label>Email Address</label>
+            <input  formControlName="email" type="email" placeholder="Email" autocomplete="off" />
+
+            <div *ngIf="email.invalid && email.dirty">
+                You must enter a valid email address
+            </div>
+
+            <!-- <label>Mobile Number</label>
+            <input  formControlName="mobileNumber" type="text" placeholder="Mobile Number" autocomplete="off" /> -->
+
+            <div *ngIf="!isPasswordReset ">
+            <label>Password</label>
+            <input  formControlName="password" type="password" placeholder="Password" autocomplete="off" />
+
+            <div *ngIf="password.invalid && password.dirty">
+                Password must be at least 6 characters long
+            </div>
+            </div>
+
+        <p style="text-align: right;" *ngIf="isLogin">
+            <span style="color: blue; cursor: pointer" (click)="changeType('reset')">Forget Password</span>
+        </p>
+            <div *ngIf="!isLogin && !isPasswordReset">
+                <label>Confirm Password</label>
+                <input  formControlName="passwordConfirm" type="password" placeholder="Confirm password"
+                    autocomplete="off" />
+               
+            
+
+            <div *ngIf="passwordConfirm.dirty && !passwordDoesMatch">
+                Password does not match
+            </div>
+        </div>
+
+        <div class="server-error">{{ serverMessage }}</div>
+
+        <button *ngIf="isPasswordReset"  type="submit" [disabled]="loading">
+            Send Reset Email
+        </button>
+
+        <button *ngIf="!isPasswordReset && !isSignup " [disabled]="(password.invalid || email.invalid) || loading"
+            type="submit"  color="primary">
+            Login
+        </button>
+
+        <button *ngIf="!isPasswordReset && !isLogin"  color="primary" type="submit"
+            [disabled]="form.invalid || !passwordDoesMatch || loading">
+            Create Account
+        </button>
+
+        <p style="text-align: center; margin: 1em 0em;" *ngIf="isSignup">
+            Already have account?
+            <span style="color: blue; cursor: pointer" (click)="changeType('login')">Login</span>
+        </p>
+
+        <p style="text-align: center; margin: 1em 0em;" *ngIf="isLogin">
+            Don't have account?
+            <span style="color: blue; cursor: pointer" (click)="changeType('signup')">Signup</span>
+        </p>
+
+    </form>
+
+</div>
